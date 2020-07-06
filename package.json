@@ -1,5 +1,4 @@
 {
-  "private": true,
   "name": "statebot-react-hooks",
   "description": "React Hooks for Statebot.",
   "version": "1.0.0",
