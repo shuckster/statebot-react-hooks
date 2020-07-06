@@ -1,7 +1,7 @@
 
 /*
  * Statebot React Hooks
- * v1.0.0
+ * v1.0.1
  * https://shuckster.github.io/statebot/
  * License: ISC
  */
@@ -52,4 +52,4 @@ function useStatebotEvent(bot, eventName, ...args) {
 }
 
 export { useStatebot, useStatebotEvent, useStatebotFactory };
-//# sourceMappingURL=statebot-react-hooks.mjs.map
+//# sourceMappingURL=statebot-react-hooks.js.map
