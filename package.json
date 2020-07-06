@@ -1,0 +1,66 @@
+{
+  "private": true,
+  "name": "statebot-react-hooks",
+  "description": "React Hooks for Statebot.",
+  "version": "1.0.0",
+  "author": "Conan Theobald <statebot@conans.co.uk>",
+  "license": "ISC",
+  "main": "index.js",
+  "module": "dist/esm/statebot-react-hooks.mjs",
+  "files": [
+    "dist/",
+    "CHANGELOG.md",
+    "README.md",
+    "LICENSE",
+    "index.js"
+  ],
+  "engines": {
+    "node": ">=10"
+  },
+  "keywords": [
+    "react-hooks",
+    "finite",
+    "state",
+    "machine",
+    "fsm"
+  ],
+  "homepage": "https://shuckster.github.io/statebot/",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/shuckster/statebot-react-hooks"
+  },
+  "bugs": {
+    "url": "https://github.com/shuckster/statebot-react-hooks/issues",
+    "email": "statebot@conans.co.uk"
+  },
+  "scripts": {
+    "test": "echo TODO",
+    "build:all": "concurrently \"pnpm run build:browser\" \"pnpm run build:node\" \"pnpm run build:esm\"",
+    "build:browser": "rollup --config ./build-config/rollup.config.browser.js",
+    "build:esm": "rollup --config ./build-config/rollup.config.esm.js",
+    "build:node": "rollup --config ./build-config/rollup.config.node.js"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.10.4",
+    "@babel/preset-env": "^7.10.4",
+    "@rollup/plugin-babel": "^5.0.4",
+    "@rollup/plugin-commonjs": "^13.0.0",
+    "@rollup/plugin-json": "^4.1.0",
+    "@rollup/plugin-node-resolve": "^8.1.0",
+    "concurrently": "^5.2.0",
+    "eslint": "^7.4.0",
+    "eslint-config-standard": "^14.1.1",
+    "eslint-plugin-import": "^2.22.0",
+    "eslint-plugin-node": "^11.1.0",
+    "eslint-plugin-promise": "^4.2.1",
+    "eslint-plugin-standard": "^4.0.1",
+    "rollup": "^2.19.0",
+    "rollup-plugin-cleanup": "^3.1.1",
+    "rollup-plugin-node-builtins": "^2.1.2",
+    "rollup-plugin-terser": "6.1.0"
+  },
+  "peerDependencies": {
+    "react": "^16.8",
+    "statebot": "^2"
+  }
+}
