@@ -8,7 +8,7 @@ export default {
   input: 'src/index.js',
   output: [
     {
-      file: `dist/esm/${pkg.name}.mjs`,
+      file: `dist/esm/${pkg.name}.js`,
       format: 'es',
       banner: banner(pkg),
       exports: 'named',
