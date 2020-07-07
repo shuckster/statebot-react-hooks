@@ -143,6 +143,7 @@ To hook-into [onEvent](https://shuckster.github.io/statebot/#statebotfsmonevent)
 
 ```jsx
 import React from 'react'
+import { Statebot } from 'statebot'
 import {
   useStatebot,
   useStatebotEvent
