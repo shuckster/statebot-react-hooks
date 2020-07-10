@@ -28,48 +28,63 @@ For hooking-into Statebots that have life-cycles independent of the components t
 
 ```jsx
 import React from 'react'
+
 import { Statebot } from 'statebot'
 import { useStatebot } from 'statebot-react-hooks'
 
-const loader$bot = Statebot('loader', {
+export const loadMachine = Statebot('loader', {
   chart: `
     idle ->
-      loading -> (loaded | failed) ->
+      waiting ->
+      loaded | failed ->
       idle
   `
 })
 
-loader$bot.performTransitions(({ Emit }) => ({
-  'idle -> loading': {
+loadMachine.performTransitions(({ emit }) => ({
+  'idle -> waiting': {
     on: 'start-loading',
-    then: () => setTimeout(Emit('load-success'), 1000)
+    then: () => {
+      // Fail half the time for this demo
+      const fail = Math.random() > 0.5
+      setTimeout(() => {
+        fail ? emit('error') : emit('success')
+      }, 1000)
+    }
   },
-  'loading -> loaded': {
-    on: 'load-success'
+  'waiting -> loaded': {
+    on: 'success'
   },
-  'loading -> failed': {
-    on: 'load-error'
+  'waiting -> failed': {
+    on: 'error'
   }
 }))
 
-const { Enter, Emit, inState } = loader$bot
+const { Enter, Emit, inState } = loadMachine
 
 function LoadingButton() {
-  const state = useStatebot(loader$bot)
+  const state = useStatebot(loadMachine)
 
   return (
     <button
       className={state}
       onClick={Emit('start-loading')}
-      disabled={inState('loading')}
+      disabled={!inState('idle')}
     >
       {inState('idle', 'Load')}
-      {inState('loading', 'Please wait...')}
-      {inState('loaded', 'Done!')} ({state})
+      {inState('waiting', 'Please wait...')}
+      {inState('loaded', 'Done!')}
+      {inState('failed', 'Whoops!')}
     </button>
   )
 }
+
+function ResetButton() {
+  return <button onClick={Enter('idle')}>Reset</button>
+}
 ```
+
+You can play around with this one in a [CodeSandbox](https://codesandbox.io/s/statebot-react-ot3xe?file=/src/Loader.js).
 
 ## useStatebotFactory
 
