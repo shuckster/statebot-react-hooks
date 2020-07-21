@@ -4,9 +4,24 @@ import { Statebot } from 'statebot'
 //
 // Use an existing Statebot
 //
-export function useStatebot(bot) {
+export function useStatebot (bot) {
   const [state, setState] = useState(bot.currentState())
-  useEffect(() => bot.onSwitched(setState), [bot])
+
+  useEffect(() => {
+    let done = false
+
+    const removeListener = bot.onSwitched(toState => {
+      if (!done) {
+        setState(toState)
+      }
+    })
+
+    return () => {
+      done = true
+      removeListener()
+    }
+  }, [bot])
+
   return state
 }
 
