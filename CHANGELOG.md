@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.0.2] - 2020-07-21
+### Fixed
+- useStatebot / useStatebotEvent hooks not cleaning up properly
+
 ## [1.0.1] - 2020-07-06
 ### Fixed
 - .DS_Store snuck into dist/

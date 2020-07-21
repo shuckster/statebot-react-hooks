@@ -13,9 +13,20 @@ Object.defineProperty(exports, '__esModule', { value: true });
 var react = require('react');
 var statebot = require('statebot');
 
-function useStatebot(bot) {
+function useStatebot (bot) {
   const [state, setState] = react.useState(bot.currentState());
-  react.useEffect(() => bot.onSwitched(setState), [bot]);
+  react.useEffect(() => {
+    let done = false;
+    const removeListener = bot.onSwitched(toState => {
+      if (!done) {
+        setState(toState);
+      }
+    });
+    return () => {
+      done = true;
+      removeListener();
+    }
+  }, [bot]);
   return state
 }
 function useStatebotFactory(name, config) {
@@ -34,25 +45,28 @@ function useStatebotFactory(name, config) {
   const state = useStatebot(bot);
   return { state, bot }
 }
-function useStatebotEvent(bot, eventName, ...args) {
-  const listeners = [];
-  react.useEffect(() => () => listeners.forEach(off => off()), [bot, eventName]);
+function useStatebotEvent (bot, eventName, stateOrFn, maybeFn) {
   react.useEffect(() => {
-    if (
-      [
-        'onSwitching',
-        'onSwitched',
-        'onEntering',
-        'onEntered',
-        'onExiting',
-        'onExited'
-      ].includes(eventName)
-    ) {
-      listeners.push(bot[eventName](...args));
-    } else {
-      throw new Error(`Unknown event: ${eventName}`)
+    let done = false;
+    function onSwitchFn(...args) {
+      if (!done) {
+        stateOrFn(...args);
+      }
     }
-  }, [bot, eventName]);
+    function onEnterOrExitFn(...args) {
+      if (!done) {
+        maybeFn(...args);
+      }
+    }
+    const args = typeof maybeFn === 'function'
+      ? [stateOrFn, onEnterOrExitFn]
+      : [onSwitchFn];
+    const removeListener = bot[eventName](...args);
+    return () => {
+      done = true;
+      removeListener();
+    }
+  }, [bot, eventName, stateOrFn, maybeFn]);
 }
 
 exports.useStatebot = useStatebot;

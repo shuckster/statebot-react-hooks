@@ -108,7 +108,16 @@ var statebotReactHooks = (function (exports, react, statebot) {
         setState = _useState2[1];
 
     react.useEffect(function () {
-      return bot.onSwitched(setState);
+      var done = false;
+      var removeListener = bot.onSwitched(function (toState) {
+        if (!done) {
+          setState(toState);
+        }
+      });
+      return function () {
+        done = true;
+        removeListener();
+      };
     }, [bot]);
     return state;
   }
@@ -141,26 +150,29 @@ var statebotReactHooks = (function (exports, react, statebot) {
       bot: bot
     };
   }
-  function useStatebotEvent(bot, eventName) {
-    for (var _len = arguments.length, args = new Array(_len > 2 ? _len - 2 : 0), _key = 2; _key < _len; _key++) {
-      args[_key - 2] = arguments[_key];
-    }
+  function useStatebotEvent(bot, eventName, stateOrFn, maybeFn) {
+    react.useEffect(function () {
+      var done = false;
 
-    var listeners = [];
-    react.useEffect(function () {
-      return function () {
-        return listeners.forEach(function (off) {
-          return off();
-        });
-      };
-    }, [bot, eventName]);
-    react.useEffect(function () {
-      if (['onSwitching', 'onSwitched', 'onEntering', 'onEntered', 'onExiting', 'onExited'].includes(eventName)) {
-        listeners.push(bot[eventName].apply(bot, args));
-      } else {
-        throw new Error("Unknown event: ".concat(eventName));
+      function onSwitchFn() {
+        if (!done) {
+          stateOrFn.apply(void 0, arguments);
+        }
       }
-    }, [bot, eventName]);
+
+      function onEnterOrExitFn() {
+        if (!done) {
+          maybeFn.apply(void 0, arguments);
+        }
+      }
+
+      var args = typeof maybeFn === 'function' ? [stateOrFn, onEnterOrExitFn] : [onSwitchFn];
+      var removeListener = bot[eventName].apply(bot, args);
+      return function () {
+        done = true;
+        removeListener();
+      };
+    }, [bot, eventName, stateOrFn, maybeFn]);
   }
 
   exports.useStatebot = useStatebot;
