@@ -54,23 +54,31 @@ export function useStatebotFactory(name, config) {
 //
 // Listen to Statebot events with automatic cleanup
 //
-export function useStatebotEvent(bot, eventName, ...args) {
-  const listeners = []
-  useEffect(() => () => listeners.forEach(off => off()), [bot, eventName])
+export function useStatebotEvent (bot, eventName, stateOrFn, maybeFn) {
   useEffect(() => {
-    if (
-      [
-        'onSwitching',
-        'onSwitched',
-        'onEntering',
-        'onEntered',
-        'onExiting',
-        'onExited'
-      ].includes(eventName)
-    ) {
-      listeners.push(bot[eventName](...args))
-    } else {
-      throw new Error(`Unknown event: ${eventName}`)
+
+    let done = false
+
+    function onSwitchFn(...args) {
+      if (!done) {
+        stateOrFn(...args)
+      }
     }
-  }, [bot, eventName])
+    function onEnterOrExitFn(...args) {
+      if (!done) {
+        maybeFn(...args)
+      }
+    }
+
+    const args = typeof maybeFn === 'function'
+      ? [stateOrFn, onEnterOrExitFn]
+      : [onSwitchFn]
+
+    const removeListener = bot[eventName](...args)
+
+    return () => {
+      done = true
+      removeListener()
+    }
+  }, [bot, eventName, stateOrFn, maybeFn])
 }
