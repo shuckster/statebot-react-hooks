@@ -28,6 +28,8 @@ export function useStatebot (bot) {
 //
 // Create a new Statebot within a Component
 //
+
+// TODO: Needs same TLC as other hooks
 export function useStatebotFactory(name, config) {
   const _config = useMemo(() => config, [name])
   const listeners = []
