@@ -25,19 +25,32 @@ function useStatebot (bot) {
   }, [bot]);
   return state
 }
-function useStatebotFactory(name, config) {
-  const _config = useMemo(() => config, [name]);
-  const listeners = [];
-  useEffect(() => () => listeners.forEach(off => off()), [_config]);
-  const bot = useMemo(() => {
-    const { performTransitions, onTransitions, ...botConfig } = _config || {};
+function useStatebotFactory (name, config) {
+  const { bot, listeners } = useMemo(() => {
+    const {
+      performTransitions = {},
+      onTransitions = {},
+      ...botConfig
+    } = config || {};
     const bot = Statebot(name, botConfig);
-    listeners.push(
-      bot.performTransitions(performTransitions || {}),
-      bot.onTransitions(onTransitions || {})
-    );
-    return bot
-  }, [name, _config]);
+    const listeners = [
+      bot.performTransitions(performTransitions),
+      bot.onTransitions(onTransitions)
+    ];
+    return {
+      bot,
+      listeners
+    }
+  }, []);
+  useEffect(() =>
+    () => {
+      if (typeof bot.pause === 'function') {
+        bot.pause();
+      }
+      listeners.forEach(off => off());
+    },
+    [bot, listeners]
+  );
   const state = useStatebot(bot);
   return { state, bot }
 }

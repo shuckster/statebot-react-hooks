@@ -122,28 +122,35 @@ var statebotReactHooks = (function (exports, react, statebot) {
     return state;
   }
   function useStatebotFactory(name, config) {
-    var _config = react.useMemo(function () {
-      return config;
-    }, [name]);
-
-    var listeners = [];
-    react.useEffect(function () {
-      return function () {
-        return listeners.forEach(function (off) {
-          return off();
-        });
-      };
-    }, [_config]);
-    var bot = react.useMemo(function () {
-      var _ref = _config || {},
-          performTransitions = _ref.performTransitions,
-          onTransitions = _ref.onTransitions,
+    var _useMemo = react.useMemo(function () {
+      var _ref = config || {},
+          _ref$performTransitio = _ref.performTransitions,
+          performTransitions = _ref$performTransitio === void 0 ? {} : _ref$performTransitio,
+          _ref$onTransitions = _ref.onTransitions,
+          onTransitions = _ref$onTransitions === void 0 ? {} : _ref$onTransitions,
           botConfig = _objectWithoutProperties(_ref, ["performTransitions", "onTransitions"]);
 
       var bot = statebot.Statebot(name, botConfig);
-      listeners.push(bot.performTransitions(performTransitions || {}), bot.onTransitions(onTransitions || {}));
-      return bot;
-    }, [name, _config]);
+      var listeners = [bot.performTransitions(performTransitions), bot.onTransitions(onTransitions)];
+      return {
+        bot: bot,
+        listeners: listeners
+      };
+    }, []),
+        bot = _useMemo.bot,
+        listeners = _useMemo.listeners;
+
+    react.useEffect(function () {
+      return function () {
+        if (typeof bot.pause === 'function') {
+          bot.pause();
+        }
+
+        listeners.forEach(function (off) {
+          return off();
+        });
+      };
+    }, [bot, listeners]);
     var state = useStatebot(bot);
     return {
       state: state,
