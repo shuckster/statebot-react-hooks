@@ -3,7 +3,7 @@
   "description": "React Hooks for Statebot.",
   "version": "1.1.0",
   "author": "Conan Theobald <statebot@conans.co.uk>",
-  "license": "ISC",
+  "license": "MIT",
   "main": "index.js",
   "module": "dist/esm/statebot-react-hooks.js",
   "files": [

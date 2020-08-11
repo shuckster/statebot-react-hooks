@@ -3,7 +3,7 @@
  * Statebot React Hooks
  * v1.1.0
  * https://shuckster.github.io/statebot/
- * License: ISC
+ * License: MIT
  */
 
 var statebotReactHooks = (function (exports, react, statebot) {

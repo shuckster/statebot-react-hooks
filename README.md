@@ -225,4 +225,4 @@ Of course, please stop-by the [Statebot repo](https://github.com/shuckster/state
 
 ## License
 
-Statebot was written by [Conan Theobald](https://github.com/shuckster/) and is [ISC licensed](./LICENSE).
+Statebot was written by [Conan Theobald](https://github.com/shuckster/) and is [MIT licensed](./LICENSE).
