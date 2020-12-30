@@ -186,6 +186,8 @@ var statebotReactHooks = (function (exports, react, statebot) {
   exports.useStatebotEvent = useStatebotEvent;
   exports.useStatebotFactory = useStatebotFactory;
 
+  Object.defineProperty(exports, '__esModule', { value: true });
+
   return exports;
 
 }({}, React, statebot));
