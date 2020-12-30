@@ -1,7 +1,7 @@
 {
   "name": "statebot-react-hooks",
   "description": "React Hooks for Statebot.",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "author": "Conan Theobald <statebot@conans.co.uk>",
   "license": "MIT",
   "main": "index.js",
