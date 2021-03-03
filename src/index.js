@@ -11,9 +11,10 @@ export function useStatebot (bot) {
     let done = false
 
     const removeListener = bot.onSwitched(toState => {
-      if (!done) {
-        setState(toState)
+      if (done) {
+        return
       }
+      setState(toState)
     })
 
     return () => {
@@ -71,18 +72,19 @@ export function useStatebotFactory (name, config) {
 //
 export function useStatebotEvent (bot, eventName, stateOrFn, maybeFn) {
   useEffect(() => {
-
     let done = false
 
     function onSwitchFn(...args) {
-      if (!done) {
-        stateOrFn(...args)
+      if (done) {
+        return
       }
+      stateOrFn(...args)
     }
     function onEnterOrExitFn(...args) {
-      if (!done) {
-        maybeFn(...args)
+      if (done) {
+        return
       }
+      maybeFn(...args)
     }
 
     const args = typeof maybeFn === 'function'
