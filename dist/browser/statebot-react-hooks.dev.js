@@ -110,9 +110,11 @@ var statebotReactHooks = (function (exports, react, statebot) {
     react.useEffect(function () {
       var done = false;
       var removeListener = bot.onSwitched(function (toState) {
-        if (!done) {
-          setState(toState);
+        if (done) {
+          return;
         }
+
+        setState(toState);
       });
       return function () {
         done = true;
@@ -162,15 +164,19 @@ var statebotReactHooks = (function (exports, react, statebot) {
       var done = false;
 
       function onSwitchFn() {
-        if (!done) {
-          stateOrFn.apply(void 0, arguments);
+        if (done) {
+          return;
         }
+
+        stateOrFn.apply(void 0, arguments);
       }
 
       function onEnterOrExitFn() {
-        if (!done) {
-          maybeFn.apply(void 0, arguments);
+        if (done) {
+          return;
         }
+
+        maybeFn.apply(void 0, arguments);
       }
 
       var args = typeof maybeFn === 'function' ? [stateOrFn, onEnterOrExitFn] : [onSwitchFn];

@@ -18,9 +18,10 @@ function useStatebot (bot) {
   react.useEffect(() => {
     let done = false;
     const removeListener = bot.onSwitched(toState => {
-      if (!done) {
-        setState(toState);
+      if (done) {
+        return
       }
+      setState(toState);
     });
     return () => {
       done = true;
@@ -62,14 +63,16 @@ function useStatebotEvent (bot, eventName, stateOrFn, maybeFn) {
   react.useEffect(() => {
     let done = false;
     function onSwitchFn(...args) {
-      if (!done) {
-        stateOrFn(...args);
+      if (done) {
+        return
       }
+      stateOrFn(...args);
     }
     function onEnterOrExitFn(...args) {
-      if (!done) {
-        maybeFn(...args);
+      if (done) {
+        return
       }
+      maybeFn(...args);
     }
     const args = typeof maybeFn === 'function'
       ? [stateOrFn, onEnterOrExitFn]
