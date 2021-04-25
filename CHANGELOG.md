@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.2.1] - 2021-04-25
+### Updated
+- Dependencies
+
 ## [1.2.0] - 2020-12-30
 ### Changed
 - Changed license from ISC to MIT
