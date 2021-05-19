@@ -1,7 +1,7 @@
 
 /*
  * Statebot React Hooks
- * v1.2.1
+ * v1.2.2
  * https://shuckster.github.io/statebot/
  * License: MIT
  */
