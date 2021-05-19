@@ -6,6 +6,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.2.2] - 2021-05-19
+### Updated
+- Added React 17 to peerDependencies
+- Use generic bug reporting email w/ category
+
 ## [1.2.1] - 2021-04-25
 ### Updated
 - Dependencies
