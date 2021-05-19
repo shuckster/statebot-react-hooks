@@ -31,7 +31,7 @@
   },
   "bugs": {
     "url": "https://github.com/shuckster/statebot-react-hooks/issues",
-    "email": "statebot@conans.co.uk"
+    "email": "bugs+statebot-react-hooks@conans.co.uk"
   },
   "scripts": {
     "test": "echo TODO",
